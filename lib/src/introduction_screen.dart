@@ -206,6 +206,9 @@ class IntroductionScreen extends StatefulWidget {
   /// @Default `false`
   final bool rtl;
 
+  /// Called when the user long-presses on any action button.
+  final Function(String)? onLongPress;
+
   IntroductionScreen({
     Key? key,
     this.pages,
@@ -257,6 +260,7 @@ class IntroductionScreen extends StatefulWidget {
     this.pagesAxis = Axis.horizontal,
     this.scrollPhysics = const BouncingScrollPhysics(),
     this.rtl = false,
+    this.onLongPress,
   })  : assert(
           pages != null || rawPages != null,
           "You must set either 'pages' or 'rawPages' parameter",
@@ -377,6 +381,10 @@ class IntroductionScreenState extends State<IntroductionScreen> {
             style: widget.baseBtnStyle?.merge(widget.skipStyle) ??
                 widget.skipStyle,
             semanticLabel: widget.skipSemantic,
+            onLongPress:
+                (widget.onLongPress != null && widget.skipSemantic != null)
+                    ? () => widget.onLongPress!(widget.skipSemantic!)
+                    : null,
             onPressed: _onSkip,
           );
     } else if (widget.showBackButton && _currentPage.round() > 0) {
@@ -386,6 +394,10 @@ class IntroductionScreenState extends State<IntroductionScreen> {
             style: widget.baseBtnStyle?.merge(widget.backStyle) ??
                 widget.backStyle,
             semanticLabel: widget.backSemantic,
+            onLongPress:
+                (widget.onLongPress != null && widget.backSemantic != null)
+                    ? () => widget.onLongPress!(widget.backSemantic!)
+                    : null,
             onPressed: !_isScrolling ? previous : null,
           );
     }
@@ -398,6 +410,10 @@ class IntroductionScreenState extends State<IntroductionScreen> {
             style: widget.baseBtnStyle?.merge(widget.doneStyle) ??
                 widget.doneStyle,
             semanticLabel: widget.doneSemantic,
+            onLongPress:
+                (widget.onLongPress != null && widget.doneSemantic != null)
+                    ? () => widget.onLongPress!(widget.doneSemantic!)
+                    : null,
             onPressed: !_isScrolling ? widget.onDone : null,
           );
     } else if (!isLastPage && widget.showNextButton) {
@@ -407,6 +423,10 @@ class IntroductionScreenState extends State<IntroductionScreen> {
             style: widget.baseBtnStyle?.merge(widget.nextStyle) ??
                 widget.nextStyle,
             semanticLabel: widget.nextSemantic,
+            onLongPress:
+                (widget.onLongPress != null && widget.nextSemantic != null)
+                    ? () => widget.onLongPress!(widget.nextSemantic!)
+                    : null,
             onPressed: !_isScrolling ? next : null,
           );
     }
